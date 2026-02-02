@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Day 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: #fef6f0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Seigaiha-inspired wave pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 0% 50%, transparent 70%, rgba(255, 182, 193, 0.08) 70%, rgba(255, 182, 193, 0.08) 75%, transparent 75%),
+                radial-gradient(circle at 100% 50%, transparent 70%, rgba(255, 182, 193, 0.08) 70%, rgba(255, 182, 193, 0.08) 75%, transparent 75%),
+                radial-gradient(circle at 50% 0%, transparent 70%, rgba(255, 182, 193, 0.08) 70%, rgba(255, 182, 193, 0.08) 75%, transparent 75%),
+                radial-gradient(circle at 50% 100%, transparent 70%, rgba(255, 182, 193, 0.08) 70%, rgba(255, 182, 193, 0.08) 75%, transparent 75%);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 0, 0 30px, 30px 30px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .card {
+            background: white;
+            padding: 3rem 4rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08), 0 2px 10px rgba(0, 0, 0, 0.04);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            max-width: 90vw;
+        }
+
+        .main-text {
+            font-size: 2rem;
+            color: #d14d72;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .sub-text {
+            font-size: 1.1rem;
+            color: #e8a0b4;
+            margin-bottom: 2rem;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+            min-height: 60px;
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #ff6b95, #ff8fab);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 149, 0.3);
+            transform-origin: center;
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 107, 149, 0.4);
+        }
+
+        .btn-no {
+            background: #f0f0f0;
+            color: #888;
+            position: fixed;
+            transition: left 0.2s ease-out, top 0.2s ease-out;
+            z-index: 100;
+        }
+
+        .btn-no:hover {
+            background: #e8e8e8;
+        }
+
+        .husky-container {
+            margin-top: 1rem;
+        }
+
+        .husky-btn {
+            background: none;
+            border: 2px dashed #ffb6c1;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            cursor: pointer;
+            font-size: 2rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        .husky-btn:hover {
+            background: rgba(255, 182, 193, 0.1);
+            transform: scale(1.1);
+            border-style: solid;
+        }
+
+        .husky-label {
+            font-size: 0.9rem;
+            color: #d14d72;
+            margin-top: 0.5rem;
+        }
+
+        .running-husky {
+            position: fixed;
+            font-size: 3rem;
+            z-index: 1000;
+            pointer-events: none;
+            transition: none;
+        }
+
+        .trail-effect {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+            animation: fadeOut 0.8s forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: scale(0.5) translateY(-20px);
+            }
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 500;
+        }
+
+        .falling-item {
+            position: fixed;
+            pointer-events: none;
+            z-index: 501;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .petal {
+            width: 15px;
+            height: 15px;
+            background: linear-gradient(135deg, #ffb7c5, #ffc0cb);
+            border-radius: 50% 0 50% 50%;
+            opacity: 0.8;
+        }
+
+        .confirmation {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 3rem 4rem;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            z-index: 600;
+            text-align: center;
+            animation: popIn 0.5s ease;
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .confirmation h2 {
+            font-size: 2.5rem;
+            color: #d14d72;
+            margin-bottom: 1rem;
+        }
+
+        .confirmation p {
+            font-size: 1.3rem;
+            color: #e8a0b4;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Glow effect for yes button */
+        .btn-yes.glow {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 4px 15px rgba(255, 107, 149, 0.3);
+            }
+            50% {
+                box-shadow: 0 4px 25px rgba(255, 107, 149, 0.6), 0 0 30px rgba(255, 107, 149, 0.3);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card" id="card">
+        <h1 class="main-text">Will you be my Valentine?</h1>
+        <p class="sub-text">ねえ、バレンタインになってくれる？</p>
+        <div class="buttons">
+            <button class="btn btn-yes" id="yesBtn">Yes</button>
+        </div>
+        <div class="husky-container">
+            <button class="husky-btn" id="huskyBtn">🐕</button>
+            <p class="husky-label">Click Ichi!</p>
+        </div>
+    </div>
+
+    <button class="btn btn-no" id="noBtn">No</button>
+
+    <div class="overlay" id="overlay"></div>
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const huskyBtn = document.getElementById('huskyBtn');
+        const card = document.getElementById('card');
+        const overlay = document.getElementById('overlay');
+
+        let yesScale = 1;
+        const maxScale = 1.6;
+        let isHuskyRunning = false;
+        let noBtnInCard = true;
+
+        // Position No button initially relative to card
+        function initNoButton() {
+            const cardRect = card.getBoundingClientRect();
+            const btnWidth = noBtn.offsetWidth;
+            const btnHeight = noBtn.offsetHeight;
+            
+            noBtn.style.left = (cardRect.left + cardRect.width / 2 + 50) + 'px';
+            noBtn.style.top = (cardRect.top + cardRect.height / 2 - btnHeight / 2) + 'px';
+            noBtnInCard = false;
+        }
+
+        // Initialize after a short delay to ensure layout is ready
+        setTimeout(initNoButton, 100);
+
+        // Proximity detection and dodge
+        const proximityRadius = 100;
+
+        function getDistance(x1, y1, x2, y2) {
+            return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+        }
+
+        function dodgeButton(cursorX, cursorY) {
+            const btnRect = noBtn.getBoundingClientRect();
+            const btnCenterX = btnRect.left + btnRect.width / 2;
+            const btnCenterY = btnRect.top + btnRect.height / 2;
+            
+            const distance = getDistance(cursorX, cursorY, btnCenterX, btnCenterY);
+            
+            if (distance < proximityRadius) {
+                // Calculate dodge direction (away from cursor)
+                const angle = Math.atan2(btnCenterY - cursorY, btnCenterX - cursorX);
+                const dodgeDistance = proximityRadius + 50 + Math.random() * 100;
+                
+                let newX = btnCenterX + Math.cos(angle) * dodgeDistance;
+                let newY = btnCenterY + Math.sin(angle) * dodgeDistance;
+                
+                // Keep within viewport bounds
+                const margin = 20;
+                const btnWidth = btnRect.width;
+                const btnHeight = btnRect.height;
+                
+                newX = Math.max(margin, Math.min(window.innerWidth - btnWidth - margin, newX - btnWidth / 2));
+                newY = Math.max(margin, Math.min(window.innerHeight - btnHeight - margin, newY - btnHeight / 2));
+                
+                // If still too close, pick random position
+                const newDistance = getDistance(cursorX, cursorY, newX + btnWidth / 2, newY + btnHeight / 2);
+                if (newDistance < proximityRadius) {
+                    newX = margin + Math.random() * (window.innerWidth - btnWidth - margin * 2);
+                    newY = margin + Math.random() * (window.innerHeight - btnHeight - margin * 2);
+                }
+                
+                noBtn.style.left = newX + 'px';
+                noBtn.style.top = newY + 'px';
+                
+                // Grow the Yes button
+                growYesButton();
+            }
+        }
+
+        function growYesButton() {
+            if (yesScale < maxScale) {
+                yesScale = Math.min(yesScale + 0.05, maxScale);
+                yesBtn.style.transform = `scale(${yesScale})`;
+                
+                // Add glow effect as it grows
+                if (yesScale > 1.2) {
+                    yesBtn.classList.add('glow');
+                }
+            }
+        }
+
+        // Mouse move handler
+        document.addEventListener('mousemove', (e) => {
+            dodgeButton(e.clientX, e.clientY);
+        });
+
+        // Touch support for mobile
+        document.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            dodgeButton(touch.clientX, touch.clientY);
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            const touch = e.touches[0];
+            dodgeButton(touch.clientX, touch.clientY);
+        });
+
+        // Yes button click - celebration!
+        yesBtn.addEventListener('click', () => {
+            card.classList.add('hidden');
+            noBtn.classList.add('hidden');
+            
+            // Show confirmation
+            const confirmation = document.createElement('div');
+            confirmation.className = 'confirmation';
+            confirmation.innerHTML = `
+                <h2>Yay! ❤️</h2>
+                <p>だいすき！</p>
+            `;
+            document.body.appendChild(confirmation);
+            
+            // Rain hearts and sakura
+            rainCelebration();
+        });
+
+        function rainCelebration() {
+            const hearts = ['❤️', '💖', '💕', '💗', '💓'];
+            const items = 80;
+            const duration = 4000;
+            
+            for (let i = 0; i < items; i++) {
+                setTimeout(() => {
+                    // Heart or sakura
+                    const isHeart = Math.random() > 0.4;
+                    const item = document.createElement('div');
+                    item.className = 'falling-item';
+                    
+                    if (isHeart) {
+                        item.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                        item.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+                    } else {
+                        // CSS petal or emoji
+                        if (Math.random() > 0.5) {
+                            item.textContent = '🌸';
+                            item.style.fontSize = (1 + Math.random()) + 'rem';
+                        } else {
+                            item.className = 'falling-item petal';
+                            item.style.width = (10 + Math.random() * 10) + 'px';
+                            item.style.height = item.style.width;
+                        }
+                    }
+                    
+                    item.style.left = Math.random() * window.innerWidth + 'px';
+                    item.style.top = '-50px';
+                    item.style.animationDuration = (2 + Math.random() * 3) + 's';
+                    
+                    overlay.appendChild(item);
+                    
+                    // Clean up after animation
+                    setTimeout(() => item.remove(), 5000);
+                }, Math.random() * duration);
+            }
+        }
+
+        // Husky animation
+        huskyBtn.addEventListener('click', () => {
+            if (isHuskyRunning) return;
+            isHuskyRunning = true;
+            
+            const husky = document.createElement('div');
+            husky.className = 'running-husky';
+            husky.textContent = '🐕';
+            document.body.appendChild(husky);
+            
+            // Hide original husky
+            huskyBtn.style.opacity = '0.3';
+            
+            // Playful path animation
+            const startTime = Date.now();
+            const duration = 5000;
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            const radius = Math.min(window.innerWidth, window.innerHeight) * 0.3;
+            
+            let lastX = centerX, lastY = centerY;
+            let trailCounter = 0;
+            
+            function animateHusky() {
+                const elapsed = Date.now() - startTime;
+                const progress = elapsed / duration;
+                
+                if (progress >= 1) {
+                    husky.remove();
+                    huskyBtn.style.opacity = '1';
+                    isHuskyRunning = false;
+                    return;
+                }
+                
+                // Zig-zag bouncy path
+                const angle = progress * Math.PI * 6;
+                const bounce = Math.sin(progress * Math.PI * 12) * 50;
+                const spiralRadius = radius * (1 - progress * 0.3);
+                
+                let x = centerX + Math.cos(angle) * spiralRadius + bounce;
+                let y = centerY + Math.sin(angle) * spiralRadius * 0.6 + Math.abs(Math.sin(progress * Math.PI * 8)) * 30;
+                
+                // Keep in bounds
+                x = Math.max(50, Math.min(window.innerWidth - 50, x));
+                y = Math.max(50, Math.min(window.innerHeight - 50, y));
+                
+                // Flip husky based on direction
+                if (x < lastX) {
+                    husky.style.transform = 'scaleX(-1)';
+                } else {
+                    husky.style.transform = 'scaleX(1)';
+                }
+                
+                husky.style.left = x + 'px';
+                husky.style.top = y + 'px';
+                
+                // Trail effects
+                trailCounter++;
+                if (trailCounter % 8 === 0) {
+                    createTrail(x + 25, y + 25);
+                }
+                
+                lastX = x;
+                lastY = y;
+                
+                requestAnimationFrame(animateHusky);
+            }
+            
+            requestAnimationFrame(animateHusky);
+        });
+
+        function createTrail(x, y) {
+            const effects = ['💕', '✨', '💖', '⭐'];
+            const trail = document.createElement('div');
+            trail.className = 'trail-effect';
+            trail.textContent = effects[Math.floor(Math.random() * effects.length)];
+            trail.style.left = x + 'px';
+            trail.style.top = y + 'px';
+            trail.style.fontSize = '1rem';
+            document.body.appendChild(trail);
+            
+            setTimeout(() => trail.remove(), 800);
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            const btnRect = noBtn.getBoundingClientRect();
+            const margin = 20;
+            
+            // Ensure button stays in bounds after resize
+            let newX = Math.max(margin, Math.min(window.innerWidth - btnRect.width - margin, btnRect.left));
+            let newY = Math.max(margin, Math.min(window.innerHeight - btnRect.height - margin, btnRect.top));
+            
+            noBtn.style.left = newX + 'px';
+            noBtn.style.top = newY + 'px';
+        });
+    </script>
+</body>
+</html>
